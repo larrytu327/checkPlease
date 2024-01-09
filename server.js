@@ -47,24 +47,42 @@ const express = require("express");
 // create application object
 const app = express();
 	
+
 ///////////////////////////////
 // ROUTES
 ////////////////////////////////
-// create a test route
+
 // RESTAURANTBILLS INDEX ROUTE
 router.get("/", async (req, res) => {
-	res.status(200).json({message: "restaurantbills index route"})
+	try {
+    // get all restaurantbills
+    res.json(await RestaurantBills.find({}));
+  } catch (error) {
+    //send error
+    res.status(400).json(error);
+  }
 });
 
 // RESTAURANTBILLS CREATE ROUTE
-router.post("/", async (req, res) =>  {
-	console.log(req.body)
-	res.status(200).json({message: "restaurantbills create route"})
+router.post("/", async (req, res) => {
+  try {
+    // create new person
+    res.json(await RestaurantBills.create(req.body));
+  } catch (error) {
+    //send error
+    res.status(400).json(error);
+  }
 });
 
 // RESTAURANTBILLS SHOW ROUTE
 router.get("/:id", async (req, res) => {
-	res.status(200).json({message: "restaurantbills show route: " + req.params.id })
+    try {
+        // send one restaurantbill
+        res.json(await RestaurantBills.findById(req.params.id));
+      } catch (error) {
+        //send error
+        res.status(400).json(error);
+      }
 });
 
 // restaurantbills DELETE ROUTE
