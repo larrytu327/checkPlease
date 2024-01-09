@@ -13,8 +13,8 @@ const cors = require("cors")
 const morgan = require("morgan")
 const express = require('express');
 const router = express.Router();
-const {RestaurantBills} = require('../models');
-
+const {RestaurantBills} = require('./models');
+const app = express();
 
 ///////////////////////////////
 // MIDDLEWARE
@@ -41,12 +41,6 @@ mongoose.connection
   .on("close", () => console.log("Your are disconnected from mongoose"))
   .on("error", (error) => console.log(error));
 
-// import express
-const express = require("express");
-
-// create application object
-const app = express();
-	
 
 ///////////////////////////////
 // ROUTES
@@ -87,13 +81,20 @@ router.get("/:id", async (req, res) => {
 
 // restaurantbills DELETE ROUTE
 router.delete("/:id", async (req, res) => {
-	res.status(200).json({message: "restaurantbills delete route: " + req.params.id })
+    try {
+        res.json(await RestaurantBills.findByIdAndRemove(req.params.id));
+    } catch (error) {
+        res.status(400).json(error);
+    }
 });
 
 // RESTAURANTBILLS UPDATE ROUTE
 router.put("/:id", async (req, res) => {
-	console.log(req.body)
-	res.status(200).json({message: "restaurantbills update route: " + req.params.id })
+    try {
+        res.json(await RestaurantBills.findByIdAndUpdate(req.params.id, req.body, {new:true}));
+    } catch (error) {
+        res.status(400).json(error);
+    }
 });
 
 ///////////////////////////////
