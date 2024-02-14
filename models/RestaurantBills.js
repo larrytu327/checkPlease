@@ -16,6 +16,7 @@ const RestaurantBillsSchema = new mongoose.Schema({
   },
   receipt_image_url: String,
   date: Date,
+  total: Number,
   parties: Number,
   tax_rate: Number,
   tip_percentage: Number,
